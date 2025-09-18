@@ -1,2 +1,2 @@
 # ps-agents
-Agentic workflows created by Prashant
+Agentic workflow created by Prashant
