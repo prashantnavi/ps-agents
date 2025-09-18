@@ -12,23 +12,35 @@ async def run_enhanced_research(query: str, enable_handoffs: bool = True):
 
 def run_sync(query: str, enable_handoffs: bool = True):
     """Synchronous wrapper for the async function"""
+    import asyncio
+    
     async def _run():
         async for chunk in run_enhanced_research(query, enable_handoffs):
             yield chunk
     
-    # Run the async generator
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    # Use asyncio.run for better context management
     try:
-        gen = _run()
-        while True:
-            try:
-                chunk = loop.run_until_complete(gen.__anext__())
-                yield chunk
-            except StopAsyncIteration:
-                break
+        # Create a new event loop for this thread
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        async def collect_chunks():
+            chunks = []
+            async for chunk in _run():
+                chunks.append(chunk)
+            return chunks
+        
+        chunks = loop.run_until_complete(collect_chunks())
+        
+        # Yield all chunks
+        for chunk in chunks:
+            yield chunk
+            
+    except Exception as e:
+        yield f"Error: {str(e)}"
     finally:
-        loop.close()
+        if 'loop' in locals():
+            loop.close()
 
 with gr.Blocks(theme=gr.themes.Default(primary_hue="sky")) as ui:
     gr.Markdown("# Enhanced Deep Research with Handoffs")

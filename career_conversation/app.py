@@ -404,7 +404,40 @@ If the user is engaging in discussion, try to steer them towards getting in touc
             return None
     
 
-if __name__ == "__main__":
+# Create the Gradio interface
+def create_interface():
     me = Me()
-    gr.ChatInterface(me.chat, type="messages").launch()
+    return gr.ChatInterface(
+        me.chat, 
+        title="💼 Career Conversation AI",
+        description="Upload your resume and get personalized career advice!",
+        examples=[
+            "What are my strengths based on my resume?",
+            "How can I improve my LinkedIn profile?",
+            "What interview questions should I prepare?",
+            "What career path would suit my background?",
+            "How can I negotiate a better salary?"
+        ],
+        cache_examples=False,
+        theme=gr.themes.Soft(),
+        css="""
+        .gradio-container {
+            max-width: 1200px !important;
+        }
+        .chat-message {
+            font-size: 16px;
+        }
+        """
+    )
+
+# For Hugging Face Spaces
+if __name__ == "__main__":
+    interface = create_interface()
+    interface.launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        share=False,
+        show_error=True,
+        quiet=False
+    )
     
