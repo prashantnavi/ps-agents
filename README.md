@@ -1,2 +1,2 @@
 # ps-agents
-AI Agents created by Prashant
+Agentic workflows created by Prashant
