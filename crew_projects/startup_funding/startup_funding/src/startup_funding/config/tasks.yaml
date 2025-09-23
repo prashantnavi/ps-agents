@@ -1,0 +1,23 @@
+pitch_development:
+  description: >
+    Develop a compelling pitch for {{startup_idea}} that highlights the problem it solves, the target market, product features, business model, and projected growth. Ensure the pitch is persuasive and tailored for early-stage investors.
+  expected_output: >
+    A structured pitch deck outline or script that can be used in a live investor presentation.
+  agent: pitcher
+  output_file: output/pitch_development.md
+
+competitor_analysis:
+  description: >
+    Analyze the competitive landscape for {{startup_idea}}. Identify at least three direct or indirect competitors, compare their offerings, and highlight how {{startup_idea}} differentiates itself. Challenge any weak points in the pitch.
+  expected_output: >
+    A competitive analysis report including SWOT comparisons and strategic recommendations.
+  agent: competitor
+  output_file: output/competitor_analysis.md
+
+funding_evaluation:
+  description: >
+    Evaluate the pitch for {{startup_idea}} from an investor's perspective. Assess the team, market opportunity, scalability, risks, and financial viability. Provide feedback and a funding decision based on standard VC criteria.
+  expected_output: >
+    A funding decision summary with rationale, questions for the founder, and suggestions for improvement.
+  agent: investor
+  output_file: output/funding_evaluation.md

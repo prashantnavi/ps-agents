@@ -1,0 +1,1 @@
+The selected company for investment is Kody Technolab due to its special focus on AI and robotics, robust growth metrics, benefiting from GST 2.0 reforms in tech services. A detailed report with a comparative analysis substantiates this choice compared to ideaForge and Jaro Institute.

@@ -1,0 +1,157 @@
+product_analysis_task:
+  description: >
+    Analyze the high-level requirements and create detailed user stories, acceptance criteria, and product specifications.
+    Break down complex requirements into manageable, testable features with clear success criteria.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create comprehensive product documentation including user stories, acceptance criteria, and feature specifications.
+  expected_output: >
+    Detailed product analysis with user stories, acceptance criteria, and feature specifications in markdown format.
+  agent: product_manager
+  output_file: output/product_analysis.md
+
+architecture_design_task:
+  description: >
+    Design the overall system architecture, make technical decisions, and ensure scalability and maintainability.
+    Create architectural diagrams and technical specifications based on the product requirements.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create comprehensive architectural documentation including system diagrams, technology choices, and integration patterns.
+  expected_output: >
+    System architecture design with diagrams, technology decisions, and integration specifications in markdown format.
+  agent: architecture_consultant
+  context:
+    - product_analysis_task
+  output_file: output/architecture_design.md
+
+design_task:
+  description: >
+    Take the product requirements and architectural design to prepare a detailed technical design for the development team;
+    everything should be in 1 python module, but outline the classes and methods in the module.
+    Here are the requirements: {requirements}
+    IMPORTANT: Only output the design in markdown format, laying out in detail the classes and functions in the module, describing the functionality.
+  expected_output: >
+    A detailed technical design for the development team, identifying the classes and functions in the module.
+  agent: engineering_lead
+  context:
+    - product_analysis_task
+    - architecture_design_task
+  output_file: output/{module_name}_design.md
+
+code_task:
+  description: >
+    Write a python module that implements the design described by the engineering lead, in order to achieve the requirements.
+    Here are the requirements: {requirements}
+  expected_output: >
+    A python module that implements the design and achieves the requirements.
+    IMPORTANT: Output ONLY the raw Python code without any markdown formatting, code block delimiters, or backticks.
+    The output should be valid Python code that can be directly saved to a file and executed.
+  agent: backend_engineer
+  context:
+    - design_task
+  output_file: output/{module_name}
+
+frontend_task:
+  description: >
+    Write a gradio UI in a module app.py that demonstrates the given backend class in {module_name}.
+    Assume there is only 1 user, and keep the UI very simple indeed - just a prototype or demo.
+    Here are the requirements: {requirements}
+  expected_output: >
+    A gradio UI in module app.py that demonstrates the given backend class.
+    The file should be ready so that it can be run as-is, in the same directory as the backend module, and it should import the backend class from {module_name}.
+    IMPORTANT: Output ONLY the raw Python code without any markdown formatting, code block delimiters, or backticks.
+    The output should be valid Python code that can be directly saved to a file and executed.
+  agent: frontend_engineer
+  context:
+    - code_task
+  output_file: output/app.py
+
+test_task:
+  description: >
+    Write unit tests for the given backend module {module_name} and create a test_{module_name} in the same directory as the backend module.
+  expected_output: >
+    A test_{module_name} module that tests the given backend module.
+    IMPORTANT: Output ONLY the raw Python code without any markdown formatting, code block delimiters, or backticks.
+    The output should be valid Python code that can be directly saved to a file and executed.
+  agent: test_engineer
+  context:
+    - code_task
+  output_file: output/test_{module_name}
+
+code_review_task:
+  description: >
+    Review the implemented code for quality, adherence to best practices, performance, and maintainability.
+    Provide detailed feedback and suggestions for improvement.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create a comprehensive code review report with specific recommendations and improvements.
+  expected_output: >
+    Detailed code review report with quality assessment, best practices analysis, and improvement recommendations in markdown format.
+  agent: code_reviewer
+  context:
+    - code_task
+  output_file: output/code_review.md
+
+security_analysis_task:
+  description: >
+    Analyze the code and system for security vulnerabilities, data protection issues, and security best practices.
+    Provide security recommendations and identify potential risks.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create a comprehensive security analysis report with vulnerability assessment and recommendations.
+  expected_output: >
+    Security analysis report with vulnerability assessment, risk analysis, and security recommendations in markdown format.
+  agent: security_engineer
+  context:
+    - code_task
+  output_file: output/security_analysis.md
+
+devops_setup_task:
+  description: >
+    Create deployment scripts, CI/CD pipelines, and infrastructure configurations for the application.
+    Ensure the application can be deployed and scaled effectively.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create deployment configurations, Docker files, and CI/CD pipeline definitions.
+  expected_output: >
+    DevOps configuration files including Dockerfile, docker-compose.yml, CI/CD pipeline, and deployment scripts.
+  agent: devops_engineer
+  context:
+    - code_task
+    - frontend_task
+  output_file: output/devops_configs
+
+performance_analysis_task:
+  description: >
+    Analyze and optimize application performance, create performance tests, and identify bottlenecks.
+    Ensure the application meets performance requirements and scales efficiently.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create performance analysis report and optimization recommendations.
+  expected_output: >
+    Performance analysis report with benchmarks, optimization recommendations, and performance test results in markdown format.
+  agent: performance_engineer
+  context:
+    - code_task
+  output_file: output/performance_analysis.md
+
+documentation_task:
+  description: >
+    Create comprehensive technical documentation, API documentation, and user guides for the application.
+    Ensure all code is properly documented and easy to understand.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create comprehensive documentation including API docs, user guides, and technical specifications.
+  expected_output: >
+    Complete technical documentation including API documentation, user guides, and technical specifications in markdown format.
+  agent: documentation_engineer
+  context:
+    - code_task
+    - frontend_task
+  output_file: output/documentation.md
+
+ux_design_task:
+  description: >
+    Design user interfaces, create wireframes, and ensure excellent user experience for the application.
+    Provide design guidelines and recommendations for the frontend implementation.
+    Here are the requirements: {requirements}
+    IMPORTANT: Create UX/UI design specifications with wireframes and design guidelines.
+  expected_output: >
+    UX/UI design specifications with wireframes, design guidelines, and user experience recommendations in markdown format.
+  agent: ux_ui_designer
+  context:
+    - product_analysis_task
+  output_file: output/ux_design.md

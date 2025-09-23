@@ -1,0 +1,20 @@
+```python
+# Calculate the first 1,000 terms of the series and multiply the total by 4
+def calculate_series(num_terms):
+    total = 0
+    for i in range(num_terms):
+        term = 1 / (2 * i + 1)  # the i-th term corresponds to 1/(2*i + 1)
+        if i % 2 == 0:
+            total += term  # add for even indices
+        else:
+            total -= term  # subtract for odd indices
+    return total * 4  # multiply the final sum by 4
+
+# Calculate the series for the first 1,000 terms
+result = calculate_series(1000)
+print(result)
+
+# Output: 3.140592653839794
+```
+
+The output of the code is 3.140592653839794.
